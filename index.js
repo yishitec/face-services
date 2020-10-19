@@ -155,7 +155,7 @@ exports.recognizeFaces = async (descriptor, queryImagePath) => {
   });
 
   const outQuery = faceapi.createCanvasFromMedia(queryImage);
-  resRecognition.forEach((res) => {
+  _.forEach(resRecognition, (res, index) => {
     new faceapi.draw.DrawBox(res.detection.box, {
       label: res.matchDistance < 0.5
         ? `${res.matchLabel} (${((1 - res.matchDistance) * 100).toFixed(2)}%)`
@@ -163,6 +163,7 @@ exports.recognizeFaces = async (descriptor, queryImagePath) => {
     }).draw(outQuery);
     new faceapi.draw.DrawTextField(
       [
+        `#${index}`,
         `${faceapi.utils.round(res.age, 0)} years`,
         `${translateGender(res.gender)} (${faceapi.utils.round(res.genderProbability) * 100}%)`,
       ],
