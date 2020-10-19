@@ -163,7 +163,7 @@ exports.recognizeFaces = async (descriptor, queryImagePath) => {
     }).draw(outQuery);
     new faceapi.draw.DrawTextField(
       [
-        `#${index}`,
+        `#${index + 1}`,
         `${faceapi.utils.round(res.age, 0)} years`,
         `${translateGender(res.gender)} (${faceapi.utils.round(res.genderProbability) * 100}%)`,
       ],
