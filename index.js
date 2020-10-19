@@ -55,12 +55,13 @@ exports.detectFaces = async (imagePath) => {
   const results = await faceapi
     .detectAllFaces(img, this.faceApiOptions)
     .withFaceLandmarks()
-    .withAgeAndGender();
+    .withAgeAndGender()
+    .withFaceDescriptors();
 
   const out = faceapi.createCanvasFromMedia(img);
   faceapi.draw.drawDetections(
     out,
-    results.map((res) => res.detection),
+    _.map(results, (res, index) => `#${index + 1} ${res.detection}`),
   );
   results.forEach((result) => {
     const { age, gender, genderProbability } = result;
