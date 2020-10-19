@@ -61,12 +61,13 @@ exports.detectFaces = async (imagePath) => {
   const out = faceapi.createCanvasFromMedia(img);
   faceapi.draw.drawDetections(
     out,
-    _.map(results, (res, index) => `#${index + 1} ${res.detection}`),
+    _.map(results, (res) => res.detection),
   );
-  results.forEach((result) => {
+  _.forEach(results, (result, index) => {
     const { age, gender, genderProbability } = result;
     new faceapi.draw.DrawTextField(
       [
+        `#${index + 1}`,
         `${faceapi.utils.round(age, 0)} years`,
         `${translateGender(gender)} (${faceapi.utils.round(genderProbability) * 100}%)`,
       ],
