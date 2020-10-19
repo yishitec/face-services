@@ -1,6 +1,6 @@
 {
   "name": "@yishitec/face-services",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "face-api.js",
   "main": "index.js",
   "scripts": {

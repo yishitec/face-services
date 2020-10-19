@@ -93,18 +93,23 @@ exports.detectFaces = async (imagePath) => {
 exports.buildDescriptor = async (faces = []) => {
   const ret = [];
   await _.asyncEach(faces, async (face) => {
-    const { label, imagePaths } = face;
-    const descriptors = [];
-    await _.asyncEach(imagePaths, async (imagePath) => {
-      const inputImage = await canvas.loadImage(imagePath);
-      const imageRes = await faceapi
-        .detectSingleFace(inputImage)
-        .withFaceLandmarks()
-        .withAgeAndGender()
-        .withFaceDescriptor();
-      descriptors.push(imageRes.descriptor);
-    });
-    ret.push(new faceapi.LabeledFaceDescriptors(label, descriptors));
+    const { label, imagePaths, descriptors } = face;
+    const vDescriptors = [];
+    if (imagePaths && imagePaths.length) {
+      await _.asyncEach(imagePaths, async (imagePath) => {
+        const inputImage = await canvas.loadImage(imagePath);
+        const imageRes = await faceapi
+          .detectSingleFace(inputImage)
+          .withFaceLandmarks()
+          .withAgeAndGender()
+          .withFaceDescriptor();
+          vDescriptors.push(imageRes.descriptor);
+      });
+    }
+    if (descriptors && descriptors.length) {
+      vDescriptors.push(...descriptors);
+    }
+    ret.push(new faceapi.LabeledFaceDescriptors(label, vDescriptors));
   });
   return ret;
 };
